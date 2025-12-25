@@ -1,4 +1,4 @@
-# eyeQ — Mini Project
+# EyeQ-DR-G — Mini Project
 
 A lightweight repository for eye-image analysis and modeling. This README outlines project purpose, setup, usage, and contribution guidelines.
 
