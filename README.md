@@ -15,7 +15,7 @@ A lightweight repository for eye-image analysis and modeling. This README outlin
 - [License](#license)
 
 ## Overview
-eyeQ is a small project for processing and analyzing ocular images (retina/corneal images). It includes preprocessing, lightweight model training, and inference utilities to experiment with image pipelines.
+EyeQ-DR-G is a small project for processing and analyzing ocular images (retina/corneal images). It includes preprocessing, lightweight model training, and inference utilities to experiment with image pipelines.
 
 ## Features
 - Image preprocessing (resize, normalize, augment)
