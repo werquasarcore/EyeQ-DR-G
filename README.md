@@ -1,106 +1,117 @@
- # EyeQ-DR-G Project
+# 🧠 EyeQ-DR-G: AI Clinical Documentation Agent with Memory
 
-A lightweight repository for eye-image analysis and modeling. This README outlines project purpose, setup, usage, and contribution guidelines.
+An AI-powered clinical documentation agent for eye care that not only analyzes retinal images but also **remembers patient history, tracks disease progression, and improves over time using Hindsight memory**.
 
-## Table of contents
-- [Overview](#overview)
-- [Features](#features)
-- [Tech stack](#tech-stack)
-- [Prerequisites](#prerequisites)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Project structure](#project-structure)
-- [Testing](#testing)
-- [Contributing](#contributing)
-- [License](#license)
+---
 
-## Overview
-EyeQ-DR-G is a small project for processing and analyzing ocular images (retina/corneal images). It includes preprocessing, lightweight model training, and inference utilities to experiment with image pipelines.
+## 🚀 Overview
 
-## Features
-- Image preprocessing (resize, normalize, augment)
-- Training and evaluation scripts
-- Inference script for single/batch images
-- Simple CLI and optional Jupyter notebooks for exploration
+EyeQ-DR-G is no longer just an image analysis tool — it is a **smart AI agent for clinical documentation**.
 
-## Tech stack
+It helps doctors:
+- Automatically generate clinical notes 📄
+- Track patient history across visits 🧠
+- Detect disease progression 📈
+- Provide personalized recommendations 💡
+
+Unlike traditional AI models, this system uses **persistent memory (Hindsight)** to learn from past patient interactions and continuously improve its outputs.
+
+---
+
+## 🎯 Problem Statement
+
+Clinical documentation is:
+- Time-consuming ⏳
+- Repetitive 🔁
+- Error-prone ⚠️
+
+Doctors often struggle to:
+- Recall past patient history
+- Compare previous reports
+- Track disease progression efficiently
+
+---
+
+## 💡 Solution
+
+We built an **AI Clinical Documentation Agent** that:
+
+✅ Generates structured clinical notes automatically  
+✅ Remembers past patient interactions using Hindsight  
+✅ Compares current and previous diagnoses  
+✅ Tracks disease progression over time  
+✅ Provides intelligent, personalized recommendations  
+
+---
+
+## 🧠 Hindsight Memory Integration (Core Feature)
+
+This project uses **Hindsight memory** to store and retrieve:
+
+- 📄 Previous clinical notes  
+- 👁️ Past eye scan results  
+- 💊 Treatment history  
+- 📊 Disease progression patterns  
+
+### 🔥 Example:
+
+**Visit 1:**
+> Mild Diabetic Retinopathy detected
+
+**Visit 2:**
+> Condition worsened → Moderate DR
+
+**Visit 3:**
+> High-risk progression → Immediate attention suggested
+
+👉 The agent **learns and adapts** with each interaction.
+
+---
+
+## ⚙️ Features
+
+- 🖼️ Eye image preprocessing (resize, normalize, augment)
+- 🤖 Disease detection using ML models
+- 📄 Auto clinical note generation
+- 🧠 Patient memory tracking (Hindsight)
+- 📈 Progression comparison engine
+- ⚠️ Risk prediction based on history
+- 💬 Intelligent recommendations
+
+---
+
+## 🏗️ Tech Stack
+
+- **Backend:** Python (Flask / FastAPI)
+- **AI Models:** PyTorch / TensorFlow
+- **Memory Layer:** Hindsight (Vectorize)
+- **LLM:** Groq / OpenAI-compatible models
+- **Image Processing:** OpenCV / Pillow
+- **Data Handling:** NumPy, Pandas, Scikit-learn
+
+---
+
+## 📦 Prerequisites
+
 - Python 3.8+
-- PyTorch or TensorFlow (configurable)
-- OpenCV / Pillow for image ops
-- numpy, pandas, scikit-learn for utilities
-
-## Prerequisites
-- Python 3.8 or newer
 - pip
-- (Optional) CUDA-enabled GPU for training
+- (Optional) CUDA-enabled GPU
 
-## Installation
-Clone the repo and create a virtual environment:
+---
+
+## ⚡ Installation
 
 ```bash
 git clone https://github.com/<your-org>/miniproject-eyeq.git
 cd miniproject-eyeq
+
 python -m venv .venv
+
 # macOS / Linux
 source .venv/bin/activate
+
 # Windows
 .venv\Scripts\activate
+
 pip install --upgrade pip
 pip install -r requirements.txt
-```
-
-Place any dataset (images and labels) under `data/` following the README in `data/` or update `config.yaml` to point to your dataset paths.
-
-## Usage
-
-Run preprocessing:
-```bash
-python src/preprocess.py --config config.yaml
-```
-
-Train a model:
-```bash
-python src/train.py --config config.yaml --epochs 20
-```
-
-Run inference on a single image:
-```bash
-python src/infer.py --model checkpoints/model.pt --image samples/test.jpg
-```
-
-Start interactive exploration:
-```bash
-jupyter lab
-# open notebooks/ for EDA and experiments
-```
-
-## Project structure
-- README.md
-- requirements.txt
-- config.yaml
-- data/                # datasets (not tracked)
-- src/
-  - preprocess.py
-  - train.py
-  - infer.py
-  - utils.py
-- notebooks/           # experiments and EDA
-- checkpoints/         # saved models
-- tests/               # unit / integration tests
-
-## Testing
-Run tests with:
-```bash
-pytest -q
-```
-
-## Contributing
-- Open an issue for discussion before major changes.
-- Create a feature branch, add tests, and submit a pull request.
-- Keep changes small and focused.
-
-## License
-This project is released under the MIT License. See LICENSE for details.
-
-## Contact
-For questions or issues, open an issue on the repository.
