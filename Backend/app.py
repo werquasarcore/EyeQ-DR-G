@@ -1,3 +1,5 @@
+import io
+import os
 import torch
 import torch.nn as nn
 from flask import Flask, request, jsonify
@@ -5,6 +7,17 @@ from flask_cors import CORS
 from PIL import Image
 import torchvision.transforms as transforms
 import torchvision.models as models
+from pathlib import Path
+
+# Use a small, stable thread count for predictable CPU inference speed.
+try:
+    torch.set_num_threads(max(1, min(4, os.cpu_count() or 1)))
+    torch.set_num_interop_threads(1)
+except RuntimeError:
+    pass
+
+if hasattr(torch.backends, "mkldnn"):
+    torch.backends.mkldnn.enabled = True
 
 # Step 1: Define the EXACT model architecture from your training
 class EyeQDRGModel(nn.Module):
@@ -59,34 +72,49 @@ app = Flask(__name__)
 CORS(app)
 
 # Step 3: Load the trained model
-print("Loading model...")
+BASE_DIR = Path(__file__).resolve().parent
+MODEL_PATH = BASE_DIR / "best_dual_detection_model.pth"
+
+print(f"Loading model from {MODEL_PATH}...")
 model = EyeQDRGModel()
-model.load_state_dict(torch.load('best_dual_detection_model.pth', map_location=torch.device('cpu')))
-model.eval()
-print("✓ Model loaded successfully!")
+try:
+    checkpoint = torch.load(MODEL_PATH, map_location=torch.device('cpu'), weights_only=False)
+    if isinstance(checkpoint, dict) and 'state_dict' in checkpoint:
+        state_dict = checkpoint['state_dict']
+    elif isinstance(checkpoint, dict):
+        state_dict = checkpoint
+    else:
+        raise ValueError('Unsupported checkpoint format')
+
+    model.load_state_dict(state_dict, strict=True)
+    model.eval()
+    print("✓ Model loaded successfully!")
+except Exception as exc:
+    raise RuntimeError(f"Failed to load model from {MODEL_PATH}: {exc}") from exc
 
 # Step 4: Define image preprocessing
 transform = transforms.Compose([
-    transforms.Resize((224, 224)),
+    transforms.Resize((160, 160)),
     transforms.ToTensor(),
     transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
 ])
 
 # Step 5: API endpoint for prediction
-@app.route('/predict', methods=['POST'])
-def predict():
+
+def _predict_impl():
     try:
         if 'image' not in request.files:
             return jsonify({'error': 'No image provided'}), 400
         
         file = request.files['image']
-        img = Image.open(file.stream).convert('RGB')
+        image_bytes = file.read()
+        img = Image.open(io.BytesIO(image_bytes)).convert('RGB')
         
         # Preprocess image
         img_tensor = transform(img).unsqueeze(0)
         
         # Make prediction
-        with torch.no_grad():
+        with torch.inference_mode():
             dr_output, glaucoma_output = model(img_tensor)
             
             # Apply softmax to get probabilities
@@ -122,12 +150,36 @@ def predict():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+@app.route('/predict', methods=['POST'])
+def predict():
+    return _predict_impl()
+
+@app.route('/api/predict', methods=['POST'])
+def api_predict():
+    return _predict_impl()
+
 # Step 6: Health check endpoint
+@app.route('/', methods=['GET'])
+def index():
+    return jsonify({
+        'status': 'Backend is running!',
+        'model': 'EyeQ-DR-G loaded',
+        'endpoints': ['/predict', '/health']
+    }), 200
+
 @app.route('/health', methods=['GET'])
 def health():
     return jsonify({'status': 'Backend is running!', 'model': 'EyeQ-DR-G loaded'}), 200
 
+@app.route('/api/health', methods=['GET'])
+def api_health():
+    return jsonify({'status': 'Backend is running!', 'model': 'EyeQ-DR-G loaded'}), 200
+
+@app.errorhandler(404)
+def not_found(error):
+    return jsonify({'error': 'Route not found', 'available_endpoints': ['/predict', '/health']}), 404
+
 # Step 7: Run the app
 if __name__ == '__main__':
-    print("Starting Flask server on http://localhost:5000")
-    app.run(debug=True, port=5000)
+    print("Starting Flask server on http://0.0.0.0:5000")
+    app.run(host='0.0.0.0', port=5000, debug=False)
