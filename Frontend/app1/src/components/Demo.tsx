@@ -1,7 +1,7 @@
 import { Upload, Loader2 } from "lucide-react";
 import { Button } from "../components/ui/button";
 import gradcamSample from "../assets/gradcam-sample.jpg";
-import { useState } from "react";
+import { useState, type ChangeEvent } from "react";
 
 const Demo = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -11,7 +11,7 @@ const Demo = () => {
   const [error, setError] = useState<string>("");
 
   // Handle file selection
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
       setSelectedFile(file);
@@ -35,19 +35,22 @@ const Demo = () => {
     formData.append("image", selectedFile);
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/predict`, {
+      const apiBaseUrl = import.meta.env.VITE_API_URL?.replace(/\/$/, "") || "/api";
+      const response = await fetch(`${apiBaseUrl}/predict`, {
         method: "POST",
         body: formData,
       });
 
       if (!response.ok) {
-        throw new Error("Prediction failed");
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.error || `Prediction failed (${response.status})`);
       }
 
       const data = await response.json();
       setResults(data);
     } catch (err) {
-      setError("Failed to analyze image. Make sure the backend is running.");
+      const message = err instanceof Error ? err.message : "Unknown error";
+      setError(`Failed to analyze image: ${message}`);
       console.error(err);
     } finally {
       setLoading(false);
