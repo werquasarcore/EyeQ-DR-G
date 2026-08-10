@@ -1,117 +1,122 @@
-# 🧠 EyeQ-DR-G: AI Clinical Documentation Agent with Memory
+# EyeQ-DR-G: AI-Powered Eye Disease Detection System
 
-An AI-powered clinical documentation agent for eye care that not only analyzes retinal images but also **remembers patient history, tracks disease progression, and improves over time using Hindsight memory**.
+An AI-powered retinal image analysis system designed to detect eye diseases from retinal images and assist in early screening.
 
----
+## Overview
 
-## 🚀 Overview
+EyeQ-DR-G is an AI-based retinal image analysis system that analyzes retinal images and detects eye diseases.
 
-EyeQ-DR-G is no longer just an image analysis tool — it is a **smart AI agent for clinical documentation**.
+The system helps users:
 
-It helps doctors:
-- Automatically generate clinical notes 📄
-- Track patient history across visits 🧠
-- Detect disease progression 📈
-- Provide personalized recommendations 💡
+- Analyze retinal images
+- Detect retinal diseases
+- Classify disease conditions
+- Support early disease screening
 
-Unlike traditional AI models, this system uses **persistent memory (Hindsight)** to learn from past patient interactions and continuously improve its outputs.
+## Problem Statement
 
----
+Eye diseases such as Diabetic Retinopathy and Glaucoma can lead to serious vision problems when they are not detected early.
 
-## 🎯 Problem Statement
+Traditional screening can be:
 
-Clinical documentation is:
-- Time-consuming ⏳
-- Repetitive 🔁
-- Error-prone ⚠️
+- Time-consuming
+- Dependent on specialist availability
+- Difficult to scale for large populations
 
-Doctors often struggle to:
-- Recall past patient history
-- Compare previous reports
-- Track disease progression efficiently
+There is a need for an automated system that can assist in analyzing retinal images efficiently.
 
----
+## Solution
 
-## 💡 Solution
+EyeQ-DR-G uses deep learning-based image analysis to identify eye diseases from retinal images.
 
-We built an **AI Clinical Documentation Agent** that:
+The system:
 
-✅ Generates structured clinical notes automatically  
-✅ Remembers past patient interactions using Hindsight  
-✅ Compares current and previous diagnoses  
-✅ Tracks disease progression over time  
-✅ Provides intelligent, personalized recommendations  
+- Accepts retinal images as input
+- Preprocesses the images
+- Uses trained deep learning models for analysis
+- Detects potential eye diseases
+- Provides prediction results to support screening
 
----
+## Features
 
-## 🧠 Hindsight Memory Integration (Core Feature)
+- Retinal image preprocessing
+- Image resizing and normalization
+- Deep learning-based disease detection
+- Diabetic Retinopathy detection
+- Glaucoma detection
+- Prediction results
+- Early screening support
+- Web-based interface
 
-This project uses **Hindsight memory** to store and retrieve:
+## Tech Stack
 
-- 📄 Previous clinical notes  
-- 👁️ Past eye scan results  
-- 💊 Treatment history  
-- 📊 Disease progression patterns  
-
-### 🔥 Example:
-
-**Visit 1:**
-> Mild Diabetic Retinopathy detected
-
-**Visit 2:**
-> Condition worsened → Moderate DR
-
-**Visit 3:**
-> High-risk progression → Immediate attention suggested
-
-👉 The agent **learns and adapts** with each interaction.
-
----
-
-## ⚙️ Features
-
-- 🖼️ Eye image preprocessing (resize, normalize, augment)
-- 🤖 Disease detection using ML models
-- 📄 Auto clinical note generation
-- 🧠 Patient memory tracking (Hindsight)
-- 📈 Progression comparison engine
-- ⚠️ Risk prediction based on history
-- 💬 Intelligent recommendations
-
----
-
-## 🏗️ Tech Stack
-
-- **Backend:** Python (Flask / FastAPI)
-- **AI Models:** PyTorch / TensorFlow
-- **Memory Layer:** Hindsight (Vectorize)
-- **LLM:** Groq / OpenAI-compatible models
+- **Programming:** Python
+- **Backend:** Flask / FastAPI
+- **Deep Learning:** PyTorch
+- **Model:** ResNet50
 - **Image Processing:** OpenCV / Pillow
-- **Data Handling:** NumPy, Pandas, Scikit-learn
+- **Data Handling:** NumPy, Pandas
+- **Machine Learning:** Scikit-learn
+- **Frontend:** React / TypeScript
+- **Deployment:** Vercel / Render
 
----
-
-## 📦 Prerequisites
+## Prerequisites
 
 - Python 3.8+
 - pip
-- (Optional) CUDA-enabled GPU
+- Git
+- Node.js
+- Optional CUDA-enabled GPU
 
----
-
-## ⚡ Installation
+## Installation
 
 ```bash
-git clone https://github.com/<your-org>/miniproject-eyeq.git
-cd miniproject-eyeq
+git clone https://github.com/<your-org>/eyeq-dr-g.git
+cd eyeq-dr-g
 
 python -m venv .venv
+````
 
-# macOS / Linux
-source .venv/bin/activate
+### Windows
 
-# Windows
+```bash
 .venv\Scripts\activate
+```
 
+### macOS / Linux
+
+```bash
+source .venv/bin/activate
+```
+
+### Install Dependencies
+
+```bash
 pip install --upgrade pip
 pip install -r requirements.txt
+```
+
+## Workflow
+
+```text
+Retinal Image
+      |
+      v
+Image Preprocessing
+      |
+      v
+Deep Learning Model
+      |
+      v
+Disease Detection
+      |
+      v
+Prediction Result
+```
+
+## Objective
+
+The primary objective of EyeQ-DR-G is to provide an automated retinal image screening system that can assist in the early identification of eye diseases using deep learning.
+
+
+
